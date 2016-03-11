@@ -1,4 +1,5 @@
 import sys
+import threading
 import pexpect
 
 class Pianobar:
@@ -6,19 +7,31 @@ class Pianobar:
 
 	def __init__(self):
 		self.proc = pexpect.spawnu('pianobar')
-		#self.proc.logfile = sys.stdout
-
+		
+		readthread = threading.Thread(target=self.follow_output)
+		readthread.daemon = True
+		readthread.start()
 
 	def follow_output(self):
 		while True:
-			line = self.proc.readline()
-			print(line, end='')
+			try:
+				line = self.proc.readline()
+				print(line, end='')
 
+			except pexpect.exceptions.TIMEOUT:
+				pass
+
+	def send_command(self, cmd):
+		self.proc.write(cmd+'\n')
 
 
 def main():
 	p = Pianobar()
-	p.follow_output()
+	while p.proc.isalive():
+		x = input('')
+		p.send_command(x)
+		if(x == 'q'):
+			break
 
 
 if __name__ == '__main__':
