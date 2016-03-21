@@ -14,10 +14,11 @@ class Server:
         self.running = True
 
         self.opcode_map = {
-            0x00: self.pandora.play,
-            0x01: self.pandora.pause,
-            0x02: self.select_station,
-            0x03: self.quit
+            opcodes.PLAY:           self.pandora.play,
+            opcodes.PAUSE:          self.pandora.pause,
+            opcodes.NEXT:           self.pandora.next,
+            opcodes.SELECT_STATION: self.select_station,
+            opcodes.QUIT:           self.quit
         }
  
         while self.running:

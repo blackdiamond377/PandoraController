@@ -4,6 +4,7 @@
 
 PLAY           = 0x00
 PAUSE          = 0x01
-SELECT_STATION = 0x02
-QUIT           = 0X03
+NEXT		   = 0x02
+SELECT_STATION = 0x03
+QUIT           = 0X04
 

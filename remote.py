@@ -65,6 +65,10 @@ class Pianobar:
     def pause(self):
         self.send_command('S')
 
+    def next(self):
+    	self.send_command('n')
+
+
 def main():
 	p = Pianobar()
 	while p.proc.isalive():
