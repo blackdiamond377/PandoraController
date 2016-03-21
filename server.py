@@ -30,12 +30,12 @@ class Server:
         self.opcode_map[opcode]()
         self.socket.send("OK")
         
-    def select_station():
+    def select_station(self):
         """ Receive the station number and pass it to the Pianobar controller """
         station_index = self.socket.recv(1)
         self.pandora.sendMessage(int(station_index))
 
-    def quit():
+    def quit(self):
         self.pandora.sendMessage('q')
         self.running = False
 
