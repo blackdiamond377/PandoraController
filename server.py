@@ -20,16 +20,17 @@ class Server:
             opcodes.SELECT_STATION: self.select_station,
             opcodes.QUIT:           self.quit
         }
- 
+
         while self.running:
+            (self.clientsock, addr) = self.socket.accept()
             self.receive()
 
     def receive(self):
-        opcode = self.recv(1)
+        opcode = self.clientsock.recv(1)
         print('Receved op', opcode)
         self.opcode_map[opcode]()
         self.socket.send("OK")
-        
+
     def select_station(self):
         """ Receive the station number and pass it to the Pianobar controller """
         station_index = self.socket.recv(1)

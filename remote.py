@@ -49,7 +49,7 @@ class Pianobar:
             except pexpect.exceptions.TIMEOUT:
                 pass
 
-    def interpret_output(self, output):
+    def interpret_output(self, line):
         if line.startswith('|>'):
             data = line.split(' ')
             if data[0] != 'Station':
@@ -61,7 +61,7 @@ class Pianobar:
 
     def play(self):
         self.send_command('P')
-    
+
     def pause(self):
         self.send_command('S')
 
