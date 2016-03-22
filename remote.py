@@ -27,37 +27,37 @@ def get_quoted_items(line):
 
 
 class Pianobar:
-	"""docstring for Pianobar"""
+    """docstring for Pianobar"""
 
-	def __init__(self):
-		self.station_name = ''
-		self.current_track = None
+    def __init__(self):
+        self.station_name = ''
+        self.current_track = None
 
-		self.proc = pexpect.spawnu('pianobar')
+        self.proc = pexpect.spawnu('pianobar')
 
-		readthread = threading.Thread(target=self.follow_output)
-		readthread.daemon = True
-		readthread.start()
+        readthread = threading.Thread(target=self.follow_output)
+        readthread.daemon = True
+        readthread.start()
 
-	def follow_output(self):
-		while True:
-			try:
-				line = self.proc.readline()
-				self.interpret_output(line)
-				print(line, end='')
+    def follow_output(self):
+        while True:
+            try:
+                line = self.proc.readline()
+                self.interpret_output(line)
+                print(line, end='')
 
-			except pexpect.exceptions.TIMEOUT:
-				pass
+            except pexpect.exceptions.TIMEOUT:
+                pass
 
-	def interpret_output(self, output):
-		if line.startswith('|>'):
-			data = line.split(' ')
-			if data[0] != 'Station':
-				self.current_track = Song(get_quoted_items(line))
+    def interpret_output(self, output):
+        if line.startswith('|>'):
+            data = line.split(' ')
+            if data[0] != 'Station':
+                self.current_track = Song(get_quoted_items(line))
 
 
-	def send_command(self, cmd):
-		self.proc.write(cmd+'\n')
+    def send_command(self, cmd):
+        self.proc.write(cmd+'\n')
 
     def play(self):
         self.send_command('P')
@@ -66,18 +66,18 @@ class Pianobar:
         self.send_command('S')
 
     def next(self):
-    	self.send_command('n')
+        self.send_command('n')
 
 
 def main():
-	p = Pianobar()
-	while p.proc.isalive():
-		x = input('')
-		p.send_command(x)
-		if(x == 'q'):
-			break
+    p = Pianobar()
+    while p.proc.isalive():
+        x = input('')
+        p.send_command(x)
+        if(x == 'q'):
+            break
 
 
 if __name__ == '__main__':
-	main()
+    main()
 
