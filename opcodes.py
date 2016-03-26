@@ -2,9 +2,11 @@
 # One-byte opcodes are followed by variable data lengths
 # Server knows how much data to recieve based on opcode
 
-PLAY           = 0x00
-PAUSE          = 0x01
-NEXT		   = 0x02
-SELECT_STATION = 0x03
-QUIT           = 0X04
+PLAY           = b'\x00'
+PAUSE          = b'\x01'
+NEXT           = b'\x02'
+SELECT_STATION = b'\x03'
+QUIT           = b'\x04'
+
+ACK            = b'\xFF'
 

@@ -9,6 +9,14 @@ class Client:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect(("localhost", 8000))
 
+        self.opcode_map = {
+            'P': opcodes.PLAY,
+            'S': opcodes.PAUSE,
+            'n': opcodes.NEXT,
+            'r': opcodes.SELECT_STATION,
+            'q': opcodes.QUIT
+        }
+
         self.running = True
 
         self.run()
@@ -20,20 +28,19 @@ class Client:
             if len(x) > 1:
                 args = x[1]
 
-            op = get_opcode(x)
+            op = self.opcode_map[op]
 
-            print(op + ", " + args)
+            #print(op + ", " + args)
+            self.socket.send(op)
+            ack = self.socket.recv(1)
+            if ack == opcodes.ACK:
+                print('Received OK')
+            elif ack == b'':
+                print('Connection broken....')
+                break
+            else:
+                print('Received ' + ack)
 
-    def get_opcode(op):
-        opcode_map = {
-            'P':  opcodes.PLAY,
-            'S':  opcodes.PAUSE,
-            'n':  opcodes.NEXT,
-            'ss': opcodes.SELECT_STATION,
-            'q':  opcodes.QUIT
-        }
-
-        return opcode_map[op]
 
 def main():
     Client()

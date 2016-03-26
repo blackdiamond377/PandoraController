@@ -27,9 +27,9 @@ class Server:
 
     def receive(self):
         opcode = self.clientsock.recv(1)
-        print('Receved op', opcode)
+        print('Received op', opcode)
         self.opcode_map[opcode]()
-        self.socket.send("OK")
+        self.clientsock.send(opcodes.ACK)
 
     def select_station(self):
         """ Receive the station number and pass it to the Pianobar controller """
