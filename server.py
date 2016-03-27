@@ -43,6 +43,7 @@ class Server:
         self.pandora.sendMessage(int(station_index))
 
     def quit(self):
+        self.clientsock.send(opcodes.QUIT)
         self.pandora.send_command('q')
         self.running = False
 

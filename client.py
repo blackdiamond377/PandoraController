@@ -37,6 +37,8 @@ class Client:
             ack = self.socket.recv(1)
             if ack == opcodes.ACK:
                 print('Received OK')
+            elif ack == opcodes.QUIT:
+                self.running = False
             elif ack == b'':
                 print('Connection broken....')
                 break
