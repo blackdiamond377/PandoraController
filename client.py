@@ -23,7 +23,9 @@ class Client:
 
     def run(self):
         while self.running:
-            x = input(">").split(" ", 1)
+            x = ''
+            while x == '':
+                x = input(">").split(" ", 1)
             op = x[0]
             if len(x) > 1:
                 args = x[1]

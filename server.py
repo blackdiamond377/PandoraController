@@ -26,10 +26,11 @@ class Server:
             self.receive()
 
     def receive(self):
-        while True:
+        while self.running:
             opcode = self.clientsock.recv(1)
             if opcode == b'':
                 print('Connection broken....')
+                self.quit()
                 break
 
             print('Received op', opcode)
@@ -42,7 +43,7 @@ class Server:
         self.pandora.sendMessage(int(station_index))
 
     def quit(self):
-        self.pandora.sendMessage('q')
+        self.pandora.send_command('q')
         self.running = False
 
 def main():
