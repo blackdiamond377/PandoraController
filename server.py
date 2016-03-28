@@ -39,8 +39,12 @@ class Server:
 
     def select_station(self):
         """ Receive the station number and pass it to the Pianobar controller """
-        station_index = self.socket.recv(1)
-        self.pandora.sendMessage(int(station_index))
+        self.clientsock.send(opcodes.ACK)
+        self.pandora.send_command('s', end='') # Send station select
+        station_index = self.clientsock.recv(1)
+        self.clientsock.send(opcodes.ACK) # Tell client we're ready for the id
+        self.pandora.send_command(int.from_bytes(station_index,
+            byteorder='big')) # Send station id
 
     def quit(self):
         self.clientsock.send(opcodes.QUIT)

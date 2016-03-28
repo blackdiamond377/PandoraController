@@ -31,10 +31,14 @@ class Client:
                 args = x[1]
 
             op = self.opcode_map[op]
-
-            #print(op + ", " + args)
             self.socket.send(op)
             ack = self.socket.recv(1)
+
+            if op == opcodes.SELECT_STATION:
+                station = bytes([int(input('Station ID: '))])
+                self.socket.send(station)
+                ack = self.socket.recv(1)
+
             if ack == opcodes.ACK:
                 print('Received OK')
             elif ack == opcodes.QUIT:

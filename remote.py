@@ -56,8 +56,8 @@ class Pianobar:
                 self.current_track = Song(get_quoted_items(line))
 
 
-    def send_command(self, cmd):
-        self.proc.write(cmd+'\n')
+    def send_command(self, cmd, end='\n'):
+        self.proc.write(str(cmd)+end)
 
     def play(self):
         self.send_command('P')
