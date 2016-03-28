@@ -23,8 +23,8 @@ class Client:
 
     def run(self):
         while self.running:
-            x = ''
-            while x == '':
+            x = ['']
+            while x[0] == '':
                 x = input(">").split(" ", 1)
             op = x[0]
             if len(x) > 1:
