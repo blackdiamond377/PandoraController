@@ -49,6 +49,9 @@ class Client:
             else:
                 print('Received ' + ack)
 
+        self.socket.shutdown(socket.SHUT_RDWR)
+        self.socket.close()
+
 
 def main():
     Client()
