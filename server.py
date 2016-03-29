@@ -1,4 +1,5 @@
 import socket
+import threading
 
 # internal packages
 import opcodes
@@ -23,19 +24,24 @@ class Server:
 
         while self.running:
             (self.clientsock, addr) = self.socket.accept()
-            self.receive()
+            clientthread = threading.Thread(target=self.receive, args=(self.clientsock,))
+            clientthread.start()
 
-    def receive(self):
+    def receive(self, sock):
         while self.running:
-            opcode = self.clientsock.recv(1)
+            opcode = sock.recv(1)
             if opcode == b'':
-                print('Connection broken....')
-                self.quit()
+                print('Connection to client broken...')
+                break
+
+            if opcode == opcodes.QUIT:
+                sock.send(opcodes.QUIT)
+                print('Connection to client severed.')
                 break
 
             print('Received op', opcode)
             self.opcode_map[opcode]()
-            self.clientsock.send(opcodes.ACK)
+            sock.send(opcodes.ACK)
 
     def select_station(self):
         """ Receive the station number and pass it to the Pianobar controller """
