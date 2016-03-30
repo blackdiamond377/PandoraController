@@ -1,6 +1,6 @@
 # A package for naming opcodes used for server communication
 # One-byte opcodes are followed by variable data lengths
-# Server knows how much data to recieve based on opcode
+# Server knows how much data to receive based on opcode
 
 PLAY           = b'\x00'
 PAUSE          = b'\x01'
