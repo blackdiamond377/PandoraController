@@ -68,6 +68,10 @@ class Pianobar:
     def next(self):
         self.send_command('n')
 
+    def select_station(self, station_index):
+        self.send_command('s', end='')
+        self.send_command(station_index)
+
 def main():
     p = Pianobar()
     while p.proc.isalive():

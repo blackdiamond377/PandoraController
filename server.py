@@ -53,9 +53,8 @@ class ClientHandler(threading.Thread):
         return arg
 
     def select_station(self):
-        self.pandora.send_command('s', end='')
         station_index = int.from_bytes(self.recv_arg(1), byteorder='big')
-        self.pandora.send_command(station_index)
+        self.pandora.select_station(station_index)
 
 
 class Server:
