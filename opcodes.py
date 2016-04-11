@@ -6,7 +6,9 @@ PLAY           = b'\x00'
 PAUSE          = b'\x01'
 NEXT           = b'\x02'
 SELECT_STATION = b'\x03'
-QUIT           = b'\x04'
+GET_SONG       = b'\x04'
+
+QUIT           = b'\x10'
 
 ACK            = b'\xFF'
 

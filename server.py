@@ -1,5 +1,6 @@
 import socket
 import threading
+import json
 
 # internal packages
 import opcodes
@@ -12,6 +13,7 @@ class ClientHandler(threading.Thread):
         self.sock = sock
         self.server = server
         self.pandora = pandora = server.pandora
+        self.current_song = self.pandora.Song
 
         self.opcode_map = {
             opcodes.PLAY:           pandora.play,
@@ -43,6 +45,9 @@ class ClientHandler(threading.Thread):
             self.sock.send(opcodes.ACK)
             self.opcode_map[opcode]()
 
+            if self.current_song != self.pandora.Song:
+                self.notify_new_song()
+
         self.sock.shutdown(socket.SHUT_RDWR)
         self.sock.close()
 
@@ -55,6 +60,12 @@ class ClientHandler(threading.Thread):
     def select_station(self):
         station_index = int.from_bytes(self.recv_arg(1), byteorder='big')
         self.pandora.select_station(station_index)
+
+    def notify_new_song(self):
+        self.sock.send(opcodes.GET_SONG)
+        ack = self.sock.recv(1)
+
+
 
 
 class Server:
