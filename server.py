@@ -13,7 +13,7 @@ class ClientHandler(threading.Thread):
         self.sock = sock
         self.server = server
         self.pandora = pandora = server.pandora
-        self.current_song = self.pandora.Song
+        self.current_song = self.pandora.current_track
 
         self.opcode_map = {
             opcodes.PLAY:           pandora.play,
@@ -43,8 +43,9 @@ class ClientHandler(threading.Thread):
             self.sock.send(opcodes.ACK)
             self.opcode_map[opcode]()
 
-            if self.current_song != self.pandora.Song:
+            if self.current_song != self.pandora.current_track:
                 self.notify_new_song()
+                self.current_song = self.pandora.current_track
 
         self.sock.shutdown(socket.SHUT_RDWR)
         self.sock.close()
@@ -63,7 +64,17 @@ class ClientHandler(threading.Thread):
         self.sock.send(opcodes.GET_SONG)
         ack = self.sock.recv(1)
 
+        try:
+            serialized_song = json.dumps(self.pandora.current_track).encode()
+            length = len(serialized_song)
 
+            self.sock.send(length.toBytes(1, byteorder='big'))
+        except OverflowError:
+            print('Song didn\'t parse correctly. (Too long?)')
+
+        ack = self.sock.recv(1)
+        self.sock.sendall(serialized_song)
+        ack = self.sock.recv(1)
 
 
 class Server:
