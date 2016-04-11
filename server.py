@@ -22,8 +22,6 @@ class ClientHandler(threading.Thread):
             opcodes.SELECT_STATION: self.select_station,
         }
 
-        self.run()
-
     def run(self):
         self.listen()
 
@@ -85,7 +83,7 @@ class Server:
 
     def mainloop(self):
         while self.running:
-            ClientHandler(self, *self.socket.accept())
+            ClientHandler(self, *self.socket.accept()).start()
 
     def quit(self):
         self.running = False
